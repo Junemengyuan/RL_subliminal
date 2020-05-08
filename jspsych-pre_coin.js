@@ -99,12 +99,6 @@ plugin.trial = function(display_element,trial) {
 
     display_element.innerHTML = '<img class="jspsych-pre-coin" id="jspsych-pre-coin1" src="plus.jpg"></img>';
 
-    jsPsych.pluginAPI.setTimeout(function() {
-        display_element.querySelector('#jspsych-pre-coin1').style.visibility = 'hidden';
-        display_element.innerHTML = '<img id="jspsych-pre-coin2" class="jspsych-pre-coin" src="'+show_coin+'"></img>';
-      }, 17);
-  };
-
     //show different images
     	jsPsych.pluginAPI.setTimeout(function() {
         display_element.querySelector('#jspsych-pre-coin1').style.visibility = 'hidden';
