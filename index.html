@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cocoa Lab RL Experiment</title>
+	<link rel="stylesheet" type="text/css" href="RL.css">
+	<script type="text/javascript" src="jspsych.js"></script>
+	<script type="text/javascript" src="plugins/jspsych-image-keyboard-response.js"></script>
+	<script type="text/javascript" src="plugins/jspsych-animation.js"></script>
+	<script type="text/javascript" src="plugins/jspsych-call-function.js"></script>
+	<script type="text/javascript" src="plugins/jspsych-categorize-image.js"></script>
+	<script type="text/javascript" src="plugins/jspsych-cloze.js"></script>
+	<script type="text/javascript" src="plugins/jspsych-image-keyboard-response.js"></script>
+	<script type="text/javascript" src="plugins/jspsych-instructions.js"></script>
+	<script type="text/javascript" src="plugins/jspsych-resize.js"></script>
+	<script type="text/javascript" src="plugins/jspsych-survey-text.js"></script>
+	<script type="text/javascript" src="jspsych-pre_coin.js"></script>
+	<script type="text/javascript" src="jspsych-RL.js"></script>
+	<script type="text/javascript" src='additional-materials.js'></script>
+</head>
+<body>
+</body>
+<script>
+	//variables
+	//loop for the coin that flash
+	var picture_coin = 0;
+	//threshold_time, you need to read from outside
+  	var threshold_time = -1;
+	//components of experiment
+
+	//ask participant's name/ID
+	var participant_ID = {
+		type: 'survey-text',
+		questions:[
+			{prompt:'<p style="background-color:white;width:20%">Please enter your name or surname:</p>',
+			required: true}
+		]
+	};
+
+	//start of everything except participant_ID
+	var intro_experiment = {
+		type: 'instructions',
+		pages: [intro_exp],
+		key_forward: 'space'
+	}
+
+	//overlapped components
+	var instr_practice_pre = {
+		type: 'instructions',
+		pages: [instrtxt_practice],
+		key_forward: 'space'
+	}
+
+	var instr_main_pre = {
+		type: 'instructions',
+		pages: [instrtxt_main],
+		key_forward: 'space'
+	}
+
+	//pre-test
+	var instruction_pre = {
+		type: 'instructions',
+		pages: [instrtxt_pre_start,
+		instrtxt_pre],
+		key_forward: 'space'
+	}
+
+	var show_coin = {
+		type: 'animation',
+		stimuli: ['Quarter.jpg', 'Nickel.jpg'],
+		frame_time: 1000,
+		frame_isi: 1000,
+		prompt: '<p style="text-align:center; width:80%; color:white; position:absolute; top:80%; left:10%; font-size: 40px;">These are stimuli you will see</p>'
+	};
+
+	//pre-test practice
+
+	var practice_coin = {
+		type:'pre_coin',
+		practice_experiment:0,
+		question_text: pre_question,
+		chioce: ['a','s','d','f'],
+		repetition: 6
+	}
+
+	//pre-test experiment
+
+	var experiment_coin = {
+		type: 'pre_coin',
+		practice_experiment:1,
+		question_text: pre_question,
+		chioce: ['a','s','d','f'],
+		repetition: 60
+	}
+
+	//pre-test end
+
+	var end_pre = {
+		type: 'instructions',
+		pages: [endtxt_pre],
+		key_forward: 'space'
+	}
+
+	//reinforcement learning task
+	//show instruction and pictures
+	var instruction_rl = {
+		type: 'instructions',
+		pages: [instrtxt_rl_start,
+		instrtxt_rl],
+		key_forward: 'space'
+	}
+
+    var show_picture = {
+    	type: 'animation',
+    	stimuli: [
+    	'1_1.png', '1_2.png',
+    	'2_1.png', '2_2.png',
+    	'2_3.png', '2_4.png',
+    	'Quarter.jpg','Nickel.jpg'
+    	],
+    	frame_time: 1000,
+    	prompt: '<p style="text-align:center; width:80%; color:white; position:absolute; top:70%; left:8%; font-size: 40px;">These are stimuli you will see</p>'
+    }
+
+    //RL practice
+    var practice_RL = {
+    	type: 'RL',
+    	choices:['leftarrow','rightarrow'],
+    	repetition:6,
+    	practice_experiment:0,
+    	rate_array11:qrate11,
+    	rate_array12:qrate12
+    }
+
+    var experiment_RL = {
+    	type: 'RL',
+    	choices:['leftarrow','rightarrow'],
+    	repetition:80,
+    	practice_experiment:1,
+    	rate_array11:qrate11,
+    	rate_array12:qrate12
+    }
+
+//arrange experiment
+var experiment = [];
+
+//experiment.push(participant_ID,intro_experiment,instruction_pre,instr_practice_pre,practice_coin,instr_main_pre,experiment_coin,instruction_rl,instr_practice_pre,practice_RL,instr_main_pre,experiment_RL);
+experiment.push(intro_experiment,practice_coin,experiment_coin);
+
+jsPsych.pluginAPI.preloadImages(coin_sequence, function(){startExperiment();});
+
+function startExperiment() {
+	function saveData(filename, filedata){
+		$.ajax({
+			type:'post',
+			cache:false,
+			url:'savedata.php',
+			data:{filename:filename,filedata:filedata}
+		});
+	}
+
+	jsPsych.init({
+		timeline: experiment,
+		on_finish: function() {
+        //jsPsych.data.get().localSave('csv','mydata.csv');
+        saveData("experiment_data",jsPsych.data.get().csv());
+    }
+	});
+};
+</script>
+</html>

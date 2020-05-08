@@ -1,0 +1,67 @@
+* {
+	background-color: black;
+}
+
+/*instructions and titles*/
+.instrtxt {
+	color:white;
+	font-size: 150%;
+	width:80%;
+	top:100px;
+	left:10%;
+	position: relative;
+}
+
+.instrstart {
+	text-align: center;
+	color:white;
+	font-size: 600%;
+	width:80%;
+	top:150px;
+	left:10%;
+	position: relative;
+}
+
+.instrstarttxt {
+	text-align: center;
+	color:white;
+	font-size: 150%;
+	top:200px;
+	position: relative;
+}
+
+/*text*/
+.cpre_question {
+	text-align:center; 
+	width:80%; 
+	color:white; 
+	position:absolute; 
+	top:30%; 
+	left:10%; 
+	font-size: 30px;
+}
+
+/*images*/
+.center {
+	margin-left: auto;
+  	margin-right: auto;
+  	width: 50%;
+}
+
+.jspsych-pre-coin {
+	position:absolute; 
+	top:25%; 
+	left:38%;
+}
+
+#jspsych-pre-coin1 {
+	top: 33%;
+	left: 42%;
+}
+
+
+
+
+
+
+
